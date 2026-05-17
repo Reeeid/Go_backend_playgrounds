@@ -1,55 +1,52 @@
 package post
 
 import (
-	"time"
+	"cqrs_exercise/internal/domain/event"
 )
 
 type PostCreatedEvent struct {
-	id         PostID
-	title      Title
-	content    Content
-	authorID   AuthorID
-	status     Status
-	occurredAt time.Time
+	event.BaseEvent
+	id       PostID
+	title    Title
+	content  Content
+	authorID AuthorID
+	status   Status
 }
 
 func NewPostCreatedEvent(post *Post) PostCreatedEvent {
 	return PostCreatedEvent{
-		id:         post.id,
-		title:      post.title,
-		content:    post.content,
-		authorID:   post.authorID,
-		status:     post.status,
-		occurredAt: time.Now(),
+		id:       post.id,
+		title:    post.title,
+		content:  post.content,
+		authorID: post.authorID,
+		status:   post.status,
 	}
 }
 
 type PostUpdatedEvent struct {
-	id         PostID
-	title      Title
-	content    Content
-	status     Status
-	occurredAt time.Time
+	event.BaseEvent
+	id      PostID
+	title   Title
+	content Content
+	status  Status
 }
 
 func NewPostUpdatedEvent(post *Post) PostUpdatedEvent {
 	return PostUpdatedEvent{
-		id:         post.id,
-		title:      post.title,
-		content:    post.content,
-		status:     post.status,
-		occurredAt: time.Now(),
+		id:      post.id,
+		title:   post.title,
+		content: post.content,
+		status:  post.status,
 	}
 }
 
 type PostDeletedEvent struct {
-	id         PostID
-	occurredAt time.Time
+	event.BaseEvent
+	id PostID
 }
 
 func NewPostDeletedEvent(post *Post) PostDeletedEvent {
 	return PostDeletedEvent{
-		id:         post.id,
-		occurredAt: time.Now(),
+		id: post.id,
 	}
 }

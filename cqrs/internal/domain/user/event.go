@@ -1,10 +1,12 @@
 package user
 
 import (
+	"cqrs_exercise/internal/domain/event"
 	"time"
 )
 
 type UserCreatedEvent struct {
+	event.BaseEvent
 	id         UserID
 	name       Name
 	image      Image
@@ -27,6 +29,7 @@ func NewUserCreatedEvent(user *User) UserCreatedEvent {
 }
 
 type UserUpdatedEvent struct {
+	event.BaseEvent
 	id         UserID
 	name       Name
 	image      Image
@@ -47,6 +50,7 @@ func NewUserUpdatedEvent(user *User) UserUpdatedEvent {
 }
 
 type UserDeletedEvent struct {
+	event.BaseEvent
 	id         UserID
 	occurredAt time.Time
 }
@@ -59,6 +63,7 @@ func NewUserDeletedEvent(user *User) UserDeletedEvent {
 }
 
 type UserPasswordSetEvent struct {
+	event.BaseEvent
 	userID       UserID
 	hashPassword HashPassword
 	occurredAt   time.Time
@@ -73,6 +78,7 @@ func NewUserPasswordSetEvent(userID UserID, hashPassword HashPassword) UserPassw
 }
 
 type UserPasswordUpdatedEvent struct {
+	event.BaseEvent
 	userID       UserID
 	hashPassword HashPassword
 	occurredAt   time.Time
@@ -87,6 +93,7 @@ func NewUserPasswordUpdatedEvent(userID UserID, hashPassword HashPassword) UserP
 }
 
 type UserPasswordDeletedEvent struct {
+	event.BaseEvent
 	userID     UserID
 	occurredAt time.Time
 }

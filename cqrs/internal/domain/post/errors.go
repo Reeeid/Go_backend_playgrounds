@@ -1,5 +1,7 @@
 package post
 
+import "strconv"
+
 type LengthError struct {
 	FieldName string
 	Min       int
@@ -15,7 +17,7 @@ type StatusError struct {
 }
 
 func (e *LengthError) Error() string {
-	return e.FieldName + " must be between " + string(e.Min) + " and " + string(e.Max) + " characters"
+	return e.FieldName + " must be between " + strconv.Itoa(e.Min) + " and " + string(e.Max) + " characters"
 }
 
 func (e *NilError) Error() string {

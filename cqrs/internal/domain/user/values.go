@@ -76,17 +76,3 @@ func NewUserIDFromString(s string) (UserID, error) {
 	}
 	return UserID{value: id}, nil
 }
-
-func NewUser(name Name, image Image, email Email, profile Profile) (*User, error) {
-	id, err := NewUserID()
-	if err != nil {
-		return nil, err
-	}
-	return &User{
-		id:      id,
-		name:    name,
-		image:   image,
-		email:   email,
-		profile: profile,
-	}, nil
-}
