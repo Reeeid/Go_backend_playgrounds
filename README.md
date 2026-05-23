@@ -1,1 +1,3 @@
 # Go_backend_playgrounds
+
+Golangで色々遊んだり検証したりするためのリポジトリ

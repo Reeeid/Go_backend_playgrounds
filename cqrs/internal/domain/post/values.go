@@ -85,3 +85,23 @@ func NewPostIDFromString(s string) (PostID, error) {
 	}
 	return PostID{value: id}, nil
 }
+
+func (p PostID) String() string {
+	return p.value.String()
+}
+
+func (a AuthorID) String() string {
+	return a.value.String()
+}
+
+func (s Status) String() string {
+	return string(s)
+}
+
+func (t Title) String() string {
+	return t.value
+}
+
+func (c Content) String() string {
+	return c.value
+}

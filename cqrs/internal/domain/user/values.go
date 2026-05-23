@@ -76,3 +76,27 @@ func NewUserIDFromString(s string) (UserID, error) {
 	}
 	return UserID{value: id}, nil
 }
+
+func (u UserID) String() string {
+	return u.value.String()
+}
+
+func (h HashPassword) String() string {
+	return h.value
+}
+
+func (n Name) String() string {
+	return n.value
+}
+
+func (i Image) String() string {
+	return i.value
+}
+
+func (e Email) String() string {
+	return e.value
+}
+
+func (p Profile) String() string {
+	return p.value
+}

@@ -28,6 +28,11 @@ type EventHandler interface {
 	Handle(event Event) error
 }
 
+type EventStore interface {
+	Save(events []Event) error
+	Load(aggregateID string) ([]Event, error)
+}
+
 type EventPublisher interface {
 	Publish(event Event) error
 	Subscribe(eventType string, handler EventHandler) error
