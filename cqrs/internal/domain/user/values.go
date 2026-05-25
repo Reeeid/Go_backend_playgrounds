@@ -20,10 +20,6 @@ type Name struct {
 	value string
 }
 
-type Image struct {
-	value string
-}
-
 type Email struct {
 	value string
 }
@@ -50,10 +46,6 @@ func NewName(value string) (Name, error) {
 		return Name{}, errors.New("name must be between 1 and 50 characters")
 	}
 	return Name{value: value}, nil
-}
-
-func NewImage(value string) Image {
-	return Image{value: value}
 }
 
 var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
@@ -87,10 +79,6 @@ func (h HashPassword) String() string {
 
 func (n Name) String() string {
 	return n.value
-}
-
-func (i Image) String() string {
-	return i.value
 }
 
 func (e Email) String() string {

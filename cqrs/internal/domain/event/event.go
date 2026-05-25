@@ -13,7 +13,10 @@ type BaseEvent struct {
 	version     int
 }
 
-func (e BaseEvent) isEvent() {}
+func (e BaseEvent) isEvent()              {}
+func (e BaseEvent) OccurredAt() time.Time { return e.occurredAt }
+func (e BaseEvent) EventType() string     { return e.eventType }
+func (e BaseEvent) Version() int          { return e.version }
 
 func NewBaseEvent(aggregateID string, eventType string) BaseEvent {
 	return BaseEvent{
