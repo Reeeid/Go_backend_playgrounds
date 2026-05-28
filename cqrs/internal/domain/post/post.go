@@ -17,6 +17,18 @@ type Post struct {
 	version           int
 }
 
+func NewPost(id PostID, title Title, content Content, authorID AuthorID) *Post {
+	p := &Post{}
+	p.raiseEvent(PostCreatedEvent{
+		id:       id,
+		title:    title,
+		content:  content,
+		authorID: authorID,
+		status:   StatusDraft,
+	})
+	return p
+}
+
 func (p *Post) Apply(e event.Event) {
 	switch e := e.(type) {
 	case PostCreatedEvent:
@@ -35,7 +47,9 @@ func (p *Post) Apply(e event.Event) {
 		p.updatedAt = e.OccurredAt()
 		p.version++
 	case PostDeletedEvent:
-		// PostDeletedEventが発生した場合の処理は、コマンドハンドラーで行うため、ここでは何もしない
+		p.status = StatusArchived
+		p.updatedAt = e.OccurredAt()
+		p.version++
 	}
 }
 
@@ -45,4 +59,32 @@ func (p *Post) GetUncommittedEvents() []event.Event {
 
 func (p *Post) ClearUncommittedEvents() {
 	p.uncommittedEvents = nil
+}
+
+func (p *Post) raiseEvent(e event.Event) {
+	p.Apply(e)
+	p.uncommittedEvents = append(p.uncommittedEvents, e)
+}
+
+func (p *Post) Update(title Title, content Content, status Status) {
+	p.raiseEvent(PostUpdatedEvent{
+		id:      p.id,
+		title:   title,
+		content: content,
+		status:  status,
+	})
+}
+
+func (p *Post) Delete() {
+	p.raiseEvent(PostDeletedEvent{
+		id: p.id,
+	})
+}
+
+func ConstructPostFromEvents(events []event.Event) *Post {
+	p := &Post{}
+	for _, e := range events {
+		p.Apply(e)
+	}
+	return p
 }

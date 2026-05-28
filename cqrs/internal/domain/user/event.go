@@ -22,7 +22,7 @@ func NewUserCreatedEvent(user *User) UserCreatedEvent {
 		image:     user.image,
 		email:     user.email,
 		profile:   user.profile,
-		BaseEvent: event.NewBaseEvent(user.id.String(), "UserCreatedEvent"),
+		BaseEvent: event.NewBaseEvent(user.id.String(), "UserCreatedEvent", 1),
 	}
 }
 
