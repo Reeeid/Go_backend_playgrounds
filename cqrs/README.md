@@ -28,114 +28,114 @@ graph TD
 classDiagram
     class Event {
         <<interface>>
-        AggregateID() string
-        EventType() string
-        OccurredAt() Time
+        +AggregateID()
+        +EventType()
+        +OccurredAt()
     }
     class BaseEvent {
-        AggregateID string
-        eventType string
-        occurredAt Time
+        +AggregateID
+        -eventType
+        -occurredAt
     }
     class EventStore {
         <<interface>>
-        Save(events) error
-        Load(aggregateID) error
+        +Save()
+        +Load()
     }
     class EventBus {
         <<interface>>
-        Publish(event) error
-        Subscribe(eventType, handler)
+        +Publish()
+        +Subscribe()
     }
     class EventHandler {
         <<interface>>
-        Handle(event) error
+        +Handle()
     }
     class Post {
-        id PostID
-        title Title
-        content Content
-        authorID AuthorID
-        status Status
-        version int
-        Apply(Event)
-        Update() error
-        Delete()
-        UncommittedEvents() Events
-        ClearUncommittedEvents()
+        -id
+        -title
+        -content
+        -authorID
+        -status
+        -version
+        +Apply()
+        +Update()
+        +Delete()
+        +UncommittedEvents()
+        +ClearUncommittedEvents()
     }
     class PostCreatedEvent {
-        id PostID
-        title Title
-        content Content
-        authorID AuthorID
+        -id
+        -title
+        -content
+        -authorID
     }
     class PostUpdatedEvent {
-        id PostID
-        title Title
-        status Status
+        -id
+        -title
+        -status
     }
     class PostDeletedEvent {
-        id PostID
+        -id
     }
     class User {
-        id UserID
-        name Name
-        email Email
-        version int
-        Apply(Event)
-        Update()
-        Delete()
+        -id
+        -name
+        -email
+        -version
+        +Apply()
+        +Update()
+        +Delete()
     }
     class Credential {
-        userID UserID
-        password HashPassword
-        createdAt Time
-        updatedAt Time
-        Update(HashPassword)
-        Delete()
+        -userID
+        -password
+        -createdAt
+        -updatedAt
+        +Update()
+        +Delete()
     }
     class CreatePostHandler {
-        eventStore EventStore
-        publisher EventBus
-        Handle(ctx, cmd) error
+        -eventStore
+        -publisher
+        +Handle()
     }
     class UpdatePostHandler {
-        eventStore EventStore
-        publisher EventBus
-        Handle(ctx, cmd) error
+        -eventStore
+        -publisher
+        +Handle()
     }
     class DeletePostHandler {
-        eventStore EventStore
-        publisher EventBus
-        Handle(ctx, cmd) error
+        -eventStore
+        -publisher
+        +Handle()
     }
     class MemoryEventStore {
-        store map
-        Save(events) error
-        Load(aggregateID) error
+        -store
+        +Save()
+        +Load()
     }
     class MemoryEventBus {
-        handlers map
-        Publish(event) error
-        Subscribe(eventType, handler)
+        -handlers
+        +Publish()
+        +Subscribe()
     }
     class PostProjection {
-        store PostReadStore
-        Handle(Event) error
+        -store
+        +Handle()
     }
     class PostReadStore {
-        store map
-        Save(PostReadModel)
-        GetByID(id) PostReadModel
-        Delete(id)
+        -store
+        +Save()
+        +GetByID()
+        +Delete()
     }
     class PostReadModel {
-        ID string
-        Title string
-        Content string
-        AuthorID string
-        Status string
+        +ID
+        +Title
+        +Content
+        +AuthorID
+        +Status
     }
 
     BaseEvent ..|> Event
