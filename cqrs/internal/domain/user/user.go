@@ -19,13 +19,7 @@ type User struct {
 
 func NewUser(id UserID, name Name, image string, email Email, profile Profile) *User {
 	u := &User{}
-	u.raiseEvent(UserCreatedEvent{
-		id:      id,
-		name:    name,
-		image:   image,
-		email:   email,
-		profile: profile,
-	})
+	u.raise(NewUserCreatedEvent(id, name, image, email, profile))
 	return u
 }
 
@@ -60,15 +54,17 @@ func (u *User) ClearUncommittedEvents() {
 	u.uncommittedEvents = nil
 }
 
-func (u *User) raiseEvent(e event.Event) {
+func (u *User) raise(e event.Event) {
 	u.Apply(e)
 	u.uncommittedEvents = append(u.uncommittedEvents, e)
 }
 
 func (u *User) Update(name Name, image string, email Email, profile Profile) {
+	u.raise(NewUserUpdatedEvent(u.id, name, image, email, profile))
 }
 
 func (u *User) Delete() {
+	u.raise(NewUserDeletedEvent(u.id))
 }
 
 func ConstructUserFromEvent(events []event.Event) *User {

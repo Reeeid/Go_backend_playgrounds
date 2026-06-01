@@ -19,13 +19,7 @@ type Post struct {
 
 func NewPost(id PostID, title Title, content Content, authorID AuthorID) *Post {
 	p := &Post{}
-	p.raiseEvent(PostCreatedEvent{
-		id:       id,
-		title:    title,
-		content:  content,
-		authorID: authorID,
-		status:   StatusDraft,
-	})
+	p.raise(NewPostCreatedEvent(id, title, content, authorID))
 	return p
 }
 
@@ -37,18 +31,14 @@ func (p *Post) Apply(e event.Event) {
 		p.content = e.content
 		p.authorID = e.authorID
 		p.status = e.status
-		p.createdAt = e.OccurredAt()
-		p.updatedAt = e.OccurredAt()
 		p.version = 1
 	case PostUpdatedEvent:
 		p.title = e.title
 		p.content = e.content
 		p.status = e.status
-		p.updatedAt = e.OccurredAt()
 		p.version++
 	case PostDeletedEvent:
 		p.status = StatusArchived
-		p.updatedAt = e.OccurredAt()
 		p.version++
 	}
 }
@@ -61,24 +51,17 @@ func (p *Post) ClearUncommittedEvents() {
 	p.uncommittedEvents = nil
 }
 
-func (p *Post) raiseEvent(e event.Event) {
+func (p *Post) raise(e event.Event) {
 	p.Apply(e)
 	p.uncommittedEvents = append(p.uncommittedEvents, e)
 }
 
 func (p *Post) Update(title Title, content Content, status Status) {
-	p.raiseEvent(PostUpdatedEvent{
-		id:      p.id,
-		title:   title,
-		content: content,
-		status:  status,
-	})
+	p.raise(NewPostUpdatedEvent(p.id, title, content, status))
 }
 
 func (p *Post) Delete() {
-	p.raiseEvent(PostDeletedEvent{
-		id: p.id,
-	})
+	p.raise(NewPostDeletedEvent(p.id))
 }
 
 func ConstructPostFromEvents(events []event.Event) *Post {

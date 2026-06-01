@@ -1,55 +1,97 @@
 package post
 
 import (
-	"cqrs_exercise/internal/domain/event"
+	"time"
 )
 
 type PostCreatedEvent struct {
-	event.BaseEvent
-	id       PostID
-	title    Title
-	content  Content
-	authorID AuthorID
-	status   Status
+	aggregateID string
+	occurredAt  time.Time
+	eventType   string
+	id          PostID
+	title       Title
+	content     Content
+	authorID    AuthorID
+	status      Status
 }
 
-func NewPostCreatedEvent(post *Post) PostCreatedEvent {
+func (e PostCreatedEvent) AggregateID() string {
+	return e.aggregateID
+}
+func (e PostCreatedEvent) EventType() string {
+	return e.eventType
+}
+func (e PostCreatedEvent) OccurredAt() time.Time {
+	return e.occurredAt
+}
+
+func NewPostCreatedEvent(id PostID, title Title, content Content, authorID AuthorID) PostCreatedEvent {
 	return PostCreatedEvent{
-		id:        post.id,
-		title:     post.title,
-		content:   post.content,
-		authorID:  post.authorID,
-		status:    post.status,
-		BaseEvent: event.NewBaseEvent(post.id.String(), "PostCreatedEvent"),
+		aggregateID: id.String(),
+		eventType:   "PostCreatedEvent",
+		occurredAt:  time.Now(),
+		id:          id,
+		title:       title,
+		content:     content,
+		authorID:    authorID,
+		status:      StatusDraft,
 	}
 }
 
 type PostUpdatedEvent struct {
-	event.BaseEvent
-	id      PostID
-	title   Title
-	content Content
-	status  Status
+	aggregateID string
+	occurredAt  time.Time
+	eventType   string
+	id          PostID
+	title       Title
+	content     Content
+	status      Status
 }
 
-func NewPostUpdatedEvent(post *Post) PostUpdatedEvent {
+func (e PostUpdatedEvent) AggregateID() string {
+	return e.aggregateID
+}
+func (e PostUpdatedEvent) EventType() string {
+	return e.eventType
+}
+func (e PostUpdatedEvent) OccurredAt() time.Time {
+	return e.occurredAt
+}
+
+func NewPostUpdatedEvent(id PostID, title Title, content Content, status Status) PostUpdatedEvent {
 	return PostUpdatedEvent{
-		id:        post.id,
-		title:     post.title,
-		content:   post.content,
-		status:    post.status,
-		BaseEvent: event.NewBaseEvent(post.id.String(), "PostUpdatedEvent"),
+		aggregateID: id.String(),
+		eventType:   "PostUpdatedEvent",
+		occurredAt:  time.Now(),
+		id:          id,
+		title:       title,
+		content:     content,
+		status:      status,
 	}
 }
 
 type PostDeletedEvent struct {
-	event.BaseEvent
-	id PostID
+	aggregateID string
+	occurredAt  time.Time
+	eventType   string
+	id          PostID
 }
 
-func NewPostDeletedEvent(post *Post) PostDeletedEvent {
+func (e PostDeletedEvent) AggregateID() string {
+	return e.aggregateID
+}
+func (e PostDeletedEvent) EventType() string {
+	return e.eventType
+}
+func (e PostDeletedEvent) OccurredAt() time.Time {
+	return e.occurredAt
+}
+
+func NewPostDeletedEvent(id PostID) PostDeletedEvent {
 	return PostDeletedEvent{
-		id:        post.id,
-		BaseEvent: event.NewBaseEvent(post.id.String(), "PostDeletedEvent"),
+		aggregateID: id.String(),
+		eventType:   "PostDeletedEvent",
+		occurredAt:  time.Now(),
+		id:          id,
 	}
 }

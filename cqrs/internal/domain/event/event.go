@@ -3,28 +3,9 @@ package event
 import "time"
 
 type Event interface {
-	isEvent()
-}
-
-type BaseEvent struct {
-	AggregateID string
-	eventType   string
-	occurredAt  time.Time
-	version     int
-}
-
-func (e BaseEvent) isEvent()              {}
-func (e BaseEvent) OccurredAt() time.Time { return e.occurredAt }
-func (e BaseEvent) EventType() string     { return e.eventType }
-func (e BaseEvent) Version() int          { return e.version }
-
-func NewBaseEvent(aggregateID string, eventType string, version int) BaseEvent {
-	return BaseEvent{
-		AggregateID: aggregateID,
-		eventType:   eventType,
-		occurredAt:  time.Now(),
-		version:     version,
-	}
+	AggregateID() string
+	EventType() string
+	OccurredAt() time.Time
 }
 
 type EventHandler interface {
