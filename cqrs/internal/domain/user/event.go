@@ -96,7 +96,7 @@ func NewUserDeletedEvent(id UserID) UserDeletedEvent {
 	}
 }
 
-type UserPasswordSetEvent struct {
+type UserPasswordCreatedEvent struct {
 	aggregateID  string
 	eventType    string
 	occurredAt   time.Time
@@ -104,18 +104,18 @@ type UserPasswordSetEvent struct {
 	hashPassword HashPassword
 }
 
-func (e UserPasswordSetEvent) AggregateID() string {
+func (e UserPasswordCreatedEvent) AggregateID() string {
 	return e.aggregateID
 }
-func (e UserPasswordSetEvent) EventType() string {
+func (e UserPasswordCreatedEvent) EventType() string {
 	return e.eventType
 }
-func (e UserPasswordSetEvent) OccurredAt() time.Time {
+func (e UserPasswordCreatedEvent) OccurredAt() time.Time {
 	return e.occurredAt
 }
 
-func NewUserPasswordSetEvent(userID UserID, hashPassword HashPassword) UserPasswordSetEvent {
-	return UserPasswordSetEvent{
+func NewUserPasswordCreatedEvent(userID UserID, hashPassword HashPassword) UserPasswordCreatedEvent {
+	return UserPasswordCreatedEvent{
 		aggregateID:  userID.String(),
 		eventType:    "UserPasswordSetEvent",
 		occurredAt:   time.Now(),
