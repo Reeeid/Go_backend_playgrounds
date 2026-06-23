@@ -57,11 +57,11 @@ func (p *Post) raise(e event.Event) {
 }
 
 func (p *Post) Update(title Title, content Content, status Status) {
-	p.raise(NewPostUpdatedEvent(p.id, title, content, status))
+	p.raise(NewPostUpdatedEvent(p.id, p.version+1, title, content, status))
 }
 
 func (p *Post) Delete() {
-	p.raise(NewPostDeletedEvent(p.id))
+	p.raise(NewPostDeletedEvent(p.id, p.version+1))
 }
 
 func ConstructPostFromEvents(events []event.Event) *Post {

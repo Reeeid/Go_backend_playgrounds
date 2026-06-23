@@ -52,9 +52,9 @@ func (c *Credential) raise(e event.Event) {
 }
 
 func (c *Credential) Update(hashPassword HashPassword) {
-	c.raise(NewUserPasswordUpdatedEvent(c.userID, hashPassword))
+	c.raise(NewUserPasswordUpdatedEvent(c.userID, c.version+1, hashPassword))
 }
 
 func (c *Credential) Delete() {
-	c.raise(NewUserPasswordDeletedEvent(c.userID))
+	c.raise(NewUserPasswordDeletedEvent(c.userID, c.version+1))
 }

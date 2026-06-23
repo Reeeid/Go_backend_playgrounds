@@ -60,11 +60,11 @@ func (u *User) raise(e event.Event) {
 }
 
 func (u *User) Update(name Name, image string, email Email, profile Profile) {
-	u.raise(NewUserUpdatedEvent(u.id, name, image, email, profile))
+	u.raise(NewUserUpdatedEvent(u.id, u.version+1, name, image, email, profile))
 }
 
 func (u *User) Delete() {
-	u.raise(NewUserDeletedEvent(u.id))
+	u.raise(NewUserDeletedEvent(u.id, u.version+1))
 }
 
 func ConstructUserFromEvent(events []event.Event) *User {

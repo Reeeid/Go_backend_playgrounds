@@ -6,6 +6,7 @@ type Event interface {
 	AggregateID() string
 	EventType() string
 	OccurredAt() time.Time
+	AggregateVersion() int
 }
 
 type EventHandler interface {
@@ -23,6 +24,3 @@ type EventPublisher interface {
 	Unsubscribe(eventType string, handler EventHandler) error
 }
 
-type EventBus struct {
-	handlers map[string][]EventHandler
-}

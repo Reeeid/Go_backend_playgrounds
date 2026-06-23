@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "grpc_sample/gen;gen";
+
+// Unary: 1リクエスト -> 1レスポンス
+// Server streaming: 1リクエスト -> 複数レスポンス (stream)
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser(GetUserRequest)       returns (GetUserResponse);
+  rpc ListUsers(ListUsersRequest)   returns (stream ListUsersResponse);
+}
+
+message User {
+  string id    = 1;
+  string name  = 2;
+  string email = 3;
+}
+
+message CreateUserRequest { string name = 1; string email = 2; }
+message CreateUserResponse { User user = 1; }
+
+message GetUserRequest  { string id = 1; }
+message GetUserResponse { User user = 1; }
+
+message ListUsersRequest  {}
+message ListUsersResponse { User user = 1; }
